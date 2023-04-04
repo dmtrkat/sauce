@@ -1,3 +1,5 @@
+import allure
+
 from sauce.driver_init import Driver
 from sauce.pages.base_page import Base
 
@@ -20,7 +22,8 @@ class CartPage(Base):
 
     @Driver.chain
     def get_all_errors_placeholders(self):
-        return [e.text for e in self.wait_elements_visible(self.INPUT_ERROR)]
+        with allure.step("Парсинг ошибок (предупреждений) на обязательные поля"):
+            return [e.text for e in self.wait_elements_visible(self.INPUT_ERROR)]
 
     def get_check_out_button(self):
         return self.wait_element_clickable(self.CHECKOUT_BUTTON)
@@ -42,20 +45,23 @@ class CartPage(Base):
 
     @Driver.chain
     def get_note_error(self):
-        return self.wait_element_visible(self.NOTE_ERROR)
+        with allure.step("Плашка уведомления на обязательные поля ФЛК"):
+            return self.wait_element_visible(self.NOTE_ERROR)
 
     def get_postal_code_placeholder(self):
         return self.wait_element_clickable(self.POSTAL_CODE_PLACEHOLDER)
 
     @Driver.chain
     def get_thanks(self):
-        return self.wait_element_visible(self.THANK_YOU_FOR_ORDER)
+        with allure.step("Подтверждение, что заказ удался"):
+            return self.wait_element_visible(self.THANK_YOU_FOR_ORDER)
 
     # ACTIONS
 
     @Driver.chain
     def click_check_out_button(self):
-        return self.get_check_out_button().click()
+        with allure.step("Нажать кнопку Check out"):
+            return self.get_check_out_button().click()
 
     @Driver.chain
     def click_continue_button(self):
@@ -63,20 +69,25 @@ class CartPage(Base):
 
     @Driver.chain
     def click_continue_shopping_button(self):
-        return self.get_continue_shopping_button().click()
+        with allure.step("Нажать на кнопку 'Continue Shopping'"):
+            return self.get_continue_shopping_button().click()
 
     @Driver.chain
     def click_finish_button(self):
-        return self.get_finish_button().click()
+        with allure.step("Нажать на кнопку 'Finish'"):
+            return self.get_finish_button().click()
 
     @Driver.chain
     def input_first_name_placeholder(self, fname):
-        return self.get_first_name_placeholder().send_keys(fname)
+        with allure.step("Ввод имени покупателя"):
+            return self.get_first_name_placeholder().send_keys(fname)
 
     @Driver.chain
     def input_last_name_placeholder(self, lname):
-        return self.get_last_name_placeholder().send_keys(lname)
+        with allure.step("Ввод фамилии покупателя"):
+            return self.get_last_name_placeholder().send_keys(lname)
 
     @Driver.chain
     def input_postal_code_placeholder(self, pcode):
-        return self.get_postal_code_placeholder().send_keys(pcode)
+        with allure.step("Ввод индекса покупателя"):
+            return self.get_postal_code_placeholder().send_keys(pcode)

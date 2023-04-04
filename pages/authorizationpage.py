@@ -1,3 +1,5 @@
+import allure
+
 from sauce.driver_init import Driver
 from sauce.pages.base_page import Base
 from sauce.utilities.auth_data import Auth_data
@@ -39,8 +41,9 @@ class AuthorizationPage(Base):
 
     @Driver.chain
     def authentication(self):
-        self.driver.get(self.URL)
-        self.driver.delete_all_cookies()
-        self.input_username(0)
-        self.input_password(0)
-        self.login_click()
+        with allure.step("Авторизация на сайте"):
+            self.driver.get(self.URL)
+            self.driver.delete_all_cookies()
+            self.input_username(0)
+            self.input_password(0)
+            self.login_click()

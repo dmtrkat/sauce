@@ -1,15 +1,18 @@
+import allure
 import pytest
 from sauce.pages.authorizationpage import AuthorizationPage
 from sauce.pages.base_page import Base
 from sauce.pages.cartpage import CartPage
 
 
-class TestFunctionality:
+@allure.suite("Тесты на функциональность")
+class Test_Functionality:
     base = Base()
     auth = AuthorizationPage()
     cartp = CartPage()
 
     @pytest.mark.run(order=5)
+    @allure.title("Возможность продолжить совершать покупки (кнопка Continue shopping)")
     def test_continue_shopping_button(self):
         self.auth.authentication()
         x = self.base.get_all_items_names()
@@ -33,6 +36,7 @@ class TestFunctionality:
     #     assert x == y
 
     @pytest.mark.run(order=7)
+    @allure.title("Удаление товара из корзины со страницы товара")
     def test_remove_from_itemcard(self):
         self.auth.authentication()
         self.base.get_item_name_when_add("click")
@@ -41,6 +45,7 @@ class TestFunctionality:
          .wait_element_visible(self.base.ADD_TO_CART))
 
     @pytest.mark.run(order=8)
+    @allure.title("Возвращение к списку товаров")
     def test_back_to_products_button(self):
         self.auth.authentication()
         x = self.base.get_all_items_names()

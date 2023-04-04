@@ -1,3 +1,4 @@
+import allure
 import pytest
 
 from sauce.pages.authorizationpage import AuthorizationPage
@@ -5,7 +6,8 @@ from sauce.pages.base_page import Base
 from sauce.pages.mainpage import MainPage
 
 
-class Test_Filters():
+@allure.suite("Тесты на фильтрацию (сортировку) страницы")
+class Test_Filters:
     base = Base()
     auth = AuthorizationPage()
     mp = MainPage()
@@ -13,6 +15,7 @@ class Test_Filters():
     """Набор тестов на фильтр предметов на главной странице"""
 
     @pytest.mark.run(order=3)
+    @allure.title("Фильтрация товаров по возрастающему и убывающему (по имени)")
     def test_filter_az_za(self):
         self.auth.authentication()
         """Парсинг предметов и их сравнение"""
@@ -29,6 +32,7 @@ class Test_Filters():
         self.mp.assert_equals(choose_az_sorting, choose_za_sorting)
 
     @pytest.mark.run(order=4)
+    @allure.title("Фильтрация товаров по возрастающему и убывающему (по цене)")
     def test_filter_prices(self):
         self.auth.authentication()
         """Парсинг предметов и их сравнение"""

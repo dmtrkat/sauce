@@ -1,3 +1,5 @@
+import allure
+
 from sauce.driver_init import Driver
 from sauce.pages.base_page import Base
 
@@ -34,15 +36,17 @@ class MainPage(Base):
 
     @Driver.chain
     def click_filter_button(self):
-        return self.get_filter_button().click()
+        with allure.step("Нажать на кнопку Фильтров"):
+            return self.get_filter_button().click()
 
     @Driver.chain
     def click_option_filter_button(self, option):
-        if option == "az":
-            return self.get_filter_az().click()
-        elif option == "za":
-            return self.get_filter_za().click()
-        elif option == "lohi":
-            return self.get_filter_lohi().click()
-        else:
-            return self.get_filter_hilo().click()
+        with allure.step("Выбрать опцию сортировки Фильтров"):
+            if option == "az":
+                return self.get_filter_az().click()
+            elif option == "za":
+                return self.get_filter_za().click()
+            elif option == "lohi":
+                return self.get_filter_lohi().click()
+            else:
+                return self.get_filter_hilo().click()

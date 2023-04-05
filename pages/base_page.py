@@ -1,6 +1,6 @@
 import random
+import re
 import time
-
 import allure
 
 from sauce.driver_init import Driver
@@ -51,7 +51,13 @@ class Base(Driver):
 
     def get_all_prices(self):
         with allure.step("Парсинг всех цен товаров на странице"):
-            return [e.text for e in self.wait_elements_visible(self.ITEM_PRICES)]
+            prices = [e.text for e in self.wait_elements_visible(self.ITEM_PRICES)] #class list
+            prices_str = "".join(prices) # class str
+            no_dollar = re.split("\\$", prices_str)
+            no_dollar.pop(0)
+            x = " ".join(no_dollar)
+            nums = [float(n) for n in x.split()]
+            return nums
 
     def get_all_descriptions(self):
         with allure.step("Парсинг всех описаний товаров на странице"):
@@ -96,14 +102,12 @@ class Base(Driver):
     # ACTIONS
 
     """Для клика по случайной кнопке 'Add to cart' на странице"""
-
     @Driver.chain
     def click_add_to_cart_button(self):
         with allure.step("Нажать на кнопку добавления товара (Add to cart) среди множества таких кнопок"):
             return self.get_add_to_cart_button().click()
 
     """Для клика по единственной кнопке 'Add to cart' на странице"""
-
     @Driver.chain
     def click_add_to_cart_button_2(self):
         with allure.step("Нажать на единственный кнопку добавления товара на странице (Add to cart)"):

@@ -12,7 +12,9 @@ class CartPage(Base):
     CONTINUE_SHOPPING_BUTTON = "//button[@id='continue-shopping']"
     FIRST_NAME_PLACEHOLDER = "//input[@id='first-name']"
     FINISH_BUTTON = "//button[@id='finish']"
-    INPUT_ERROR = "//input[@class='input_error form_input error']"
+    INPUT_ERROR_FNAME = "//input[@class='input_error form_input error' and @placeholder='First Name']"
+    INPUT_ERROR_LNAME = "//input[@class='input_error form_input error' and @placeholder='Last Name']"
+    INPUT_ERROR_PCODE = "//input[@class='input_error form_input error' and @placeholder='Zip/Postal Code']"
     LAST_NAME_PLACEHOLDER = "//input[@id='last-name']"
     NOTE_ERROR = "//h3[text()='Error: First Name is required']"
     POSTAL_CODE_PLACEHOLDER = "//input[@id='postal-code']"
@@ -23,7 +25,7 @@ class CartPage(Base):
     @Driver.chain
     def get_all_errors_placeholders(self):
         with allure.step("Парсинг ошибок (предупреждений) на обязательные поля"):
-            return [e.text for e in self.wait_elements_visible(self.INPUT_ERROR)]
+            return self.INPUT_ERROR_FNAME, self.INPUT_ERROR_LNAME, self.INPUT_ERROR_PCODE
 
     def get_check_out_button(self):
         return self.wait_element_clickable(self.CHECKOUT_BUTTON)

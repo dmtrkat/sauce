@@ -10,20 +10,20 @@ class AuthorizationPage(Base):
     auth = Auth_data()
 
     # LOCATORS
-    login_button = "//input[@id='login-button']"
-    passwords_placeholder = "//input[@id='password']"
-    username_placeholder = "//input[@id='user-name']"
+    LOGIN_BUTTON = "//input[@id='login-button']"
+    PASSWORDS_PLACEHOLDER = "//input[@id='password']"
+    USERNAME_PLACEHOLDER = "//input[@id='user-name']"
 
     # GETTERS
 
     def get_login_button(self):
-        return self.wait_element_clickable(self.login_button)
+        return self.wait_element_clickable(self.LOGIN_BUTTON)
 
     def get_password(self):
-        return self.wait_element_clickable(self.passwords_placeholder)
+        return self.wait_element_clickable(self.PASSWORDS_PLACEHOLDER)
 
     def get_username(self):
-        return self.wait_element_clickable(self.username_placeholder)
+        return self.wait_element_clickable(self.USERNAME_PLACEHOLDER)
 
     # ACTIONS
 

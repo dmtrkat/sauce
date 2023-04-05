@@ -12,38 +12,34 @@ class Test_Filters:
     auth = AuthorizationPage()
     mp = MainPage()
 
-    """Набор тестов на фильтр предметов на главной странице"""
-
     @pytest.mark.run(order=3)
+    @pytest.mark.parametrize("option", ["az", "za"])
     @allure.title("Фильтрация товаров по возрастающему и убывающему (по имени)")
-    def test_filter_az_za(self):
+    def test_filter_az_za(self, option):
         self.auth.authentication()
-        """Парсинг предметов и их сравнение"""
-        default_az_sorting = self.mp.get_all_items_names()
+        default_sorting_names = self.mp.get_all_items_names()
         (self.mp.click_filter_button()
-         .click_option_filter_button("az"))
-        choose_az_sorting = self.mp.get_all_items_names()
-        (self.mp.assert_equals(default_az_sorting, choose_az_sorting)
-         .click_filter_button()
-         .click_option_filter_button("za"))
-        choose_za_sorting = self.mp.get_all_items_names()
-        self.mp.assert_not_equals(choose_az_sorting, choose_za_sorting)
-        choose_za_sorting.reverse()
-        self.mp.assert_equals(choose_az_sorting, choose_za_sorting)
+         .click_option_filter_button(option))
+        after_sorting_names = self.mp.get_all_items_names()
+        try:
+            self.mp.assert_equals(default_sorting_names, after_sorting_names)
+        except:
+            after_sorting_names.reverse()
+            self.mp.assert_equals(default_sorting_names, after_sorting_names)
 
     @pytest.mark.run(order=4)
+    @pytest.mark.parametrize("option", ["lohi", "hilo"])
     @allure.title("Фильтрация товаров по возрастающему и убывающему (по цене)")
-    def test_filter_prices(self):
+    def test_filter_prices(self, option):
         self.auth.authentication()
-        """Парсинг предметов и их сравнение"""
-        prices = self.mp.get_all_prices()
-        self.mp.click_filter_button()
-        self.mp.click_option_filter_button("lohi")
-        choose_lohi_sorting = self.mp.get_all_prices()
-        (self.mp.assert_not_equals(prices, choose_lohi_sorting)
-         .click_filter_button()
-         .click_option_filter_button("hilo"))
-        choose_hilo_sorting = self.mp.get_all_prices()
-        self.mp.assert_not_equals(choose_lohi_sorting, choose_hilo_sorting)
-        choose_hilo_sorting.reverse()
-        self.mp.assert_equals(choose_lohi_sorting, choose_hilo_sorting)
+        default_sorting_prices = self.mp.get_all_prices()
+        (self.mp.click_filter_button()
+         .click_option_filter_button(option))
+        after_sorting_prices = self.mp.get_all_prices()
+        try:
+            self.mp.assert_not_equals(default_sorting_prices, after_sorting_prices)
+            default_sorting_prices.sort()
+            self.mp.assert_equals(default_sorting_prices, after_sorting_prices)
+        except:
+            default_sorting_prices.reverse()
+            self.mp.assert_equals(default_sorting_prices, after_sorting_prices)

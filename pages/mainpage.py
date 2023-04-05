@@ -1,4 +1,5 @@
 import allure
+import pytest
 
 from sauce.driver_init import Driver
 from sauce.pages.base_page import Base
@@ -8,29 +9,27 @@ class MainPage(Base):
 
     # LOCATORS
 
-    filter_button = "//select"
-    filter_az = "//option[@value='az']"
-    filter_za = "//option[@value='za']"
-    filter_lohi = "//option[@value='lohi']"
-    filter_hilo = "//option[@value='hilo']"
-    inventory_list_on_main_page = "//div[@class='inventory_list']"
+    FILTER_BUTTON = "//select"
+    FILTER_AZ = "//option[@value='az']"
+    FILTER_ZA = "//option[@value='za']"
+    FILTER_LOHI = "//option[@value='lohi']"
+    FILTER_HILO = "//option[@value='hilo']"
+    INVENTORY_LIST_ON_MAIN_PAGE = "//div[@class='inventory_list']"
 
     # GETTERS
 
-    def get_filter_az(self):
-        return self.wait_element_clickable(self.filter_az)
-
     def get_filter_button(self):
-        return self.wait_element_clickable(self.filter_button)
+        return self.wait_element_clickable(self.FILTER_BUTTON)
 
-    def get_filter_hilo(self):
-        return self.wait_element_clickable(self.filter_hilo)
-
-    def get_filter_lohi(self):
-        return self.wait_element_clickable(self.filter_lohi)
-
-    def get_filter_za(self):
-        return self.wait_element_clickable(self.filter_za)
+    def get_filter(self, option):
+        if option == "az":
+            return self.wait_element_clickable(self.FILTER_AZ)
+        if option == "za":
+            return self.wait_element_clickable(self.FILTER_ZA)
+        if option == "lohi":
+            return self.wait_element_clickable(self.FILTER_LOHI)
+        if option == "hilo":
+            return self.wait_element_clickable(self.FILTER_HILO)
 
     # ACTIONS
 
@@ -42,11 +41,4 @@ class MainPage(Base):
     @Driver.chain
     def click_option_filter_button(self, option):
         with allure.step("Выбрать опцию сортировки Фильтров"):
-            if option == "az":
-                return self.get_filter_az().click()
-            elif option == "za":
-                return self.get_filter_za().click()
-            elif option == "lohi":
-                return self.get_filter_lohi().click()
-            else:
-                return self.get_filter_hilo().click()
+            return self.get_filter(option).click()
